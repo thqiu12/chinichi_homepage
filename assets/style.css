@@ -426,6 +426,19 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
 .cta-band .btn--white { background: #fff; color: var(--red); }
 .cta-band .btn--white:hover { background: #ffe9e2; }
 
+/* ========== facilities gallery (現場の風景) ========== */
+.gallery__feature { margin: 0 0 16px; border-radius: 14px; overflow: hidden; position: relative; border: 1px solid var(--line); }
+.gallery__feature img { width: 100%; height: auto; max-height: 440px; object-fit: cover; object-position: center 35%; display: block; }
+.gallery__feature figcaption {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 30px 24px 16px;
+  color: #fff; font-weight: 700; font-size: 15px;
+  background: linear-gradient(transparent, rgba(0, 34, 89, .82));
+}
+.gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.gallery figure { margin: 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: #fff; }
+.gallery figure img { width: 100%; height: 200px; object-fit: cover; display: block; }
+.gallery figcaption { padding: 12px 15px; font-size: 13px; color: var(--text); font-weight: 500; }
+
 /* ========== history (沿革) ========== */
 .timeline { max-width: 760px; margin: 0 auto; position: relative; }
 .timeline::before { content: ""; position: absolute; left: 9px; top: 8px; bottom: 8px; width: 2px; background: #cdd8ee; }
@@ -505,6 +518,7 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
 /* ---------- responsive ---------- */
 @media (max-width: 960px) {
   .philo { grid-template-columns: 1fr; gap: 28px; }
+  .gallery { grid-template-columns: repeat(2, 1fr); }
   .grp { grid-template-columns: 1fr; }
   .rep { grid-template-columns: 1fr; gap: 30px; }
   .rep__card { position: static; max-width: 420px; }
