@@ -5,8 +5,22 @@
 
 ## 構成
 
-- `index.html` — 法人向けコーポレートトップ(日本語)
-- `assets/style.css` — スタイル
+```
+index.html                  共通トップ(2入口スプラッシュ:学生 / 法人)
+corporate/
+  index.html                法人向けコーポレートトップ
+  university.html           大学提携・留学生送り出し
+  recruit.html              人材紹介・採用支援
+  training.html             法人研修・語学
+  consulting.html           中国進出・越境ECコンサル
+assets/
+  style.css                 スタイル
+  config.js                 リード送信先エンドポイント設定
+  form.js                   問い合わせフォーム送信処理(共通)
+  img/logo.png              ロゴ(現行サイトから取得しローカル化)
+```
+
+学生サイト本体は既存の chinichi-edu.jp(別CMS)を参照。スプラッシュの「学生の方へ」はそちらへ遷移します。
 
 ## デザインの根拠(現行サイトから踏襲)
 
@@ -25,9 +39,29 @@ python3 -m http.server 4178
 
 ## 今後のTODO
 
-- [ ] ロゴ・画像を本リポジトリにローカル化(現状は現行サイトのURLを参照)
-- [ ] 問い合わせフォームを chinichi_OS の線索(リード)APIへ接続 + 企業微信通知
+- [x] ロゴをローカル化(`assets/img/logo.png`)
+- [x] 各事業の詳細ページ(`corporate/university.html` 他)
+- [x] 共通トップ(学生/法人の2入口スプラッシュ)
+- [ ] 問い合わせフォームを chinichi_OS の公開リード受付APIへ接続 + 企業微信通知
+      ※ `assets/config.js` の `CHINICHI_LEAD_ENDPOINT` にURLを設定すれば送信開始。
+      chinichi_OS 側の `/api/leads` は認証必須・社内専用のため、**公開用の受付API**を別途用意する必要あり(セキュリティ要確認)。
 - [ ] 提携大学・取引企業のロゴウォール素材差し替え
-- [ ] 各事業の詳細ページ(`/corporate/university` 等)
-- [ ] 共通トップ(学生/法人の2入口スプラッシュ)
+- [ ] ヒーロー/事業の写真素材を追加(現状はテキスト中心)
 - [ ] Next.js への載せ替え検討(SSG/ISR・CMS連携)
+
+## リード連携の設計メモ
+
+法人問い合わせフォームの payload(`assets/form.js`):
+
+```json
+{
+  "source": "website-corporate",
+  "page": "/corporate/index.html",
+  "company": "", "dept": "", "name": "", "email": "", "tel": "",
+  "topic": "大学提携・留学生送り出し | 人材紹介・採用支援 | 法人研修・語学 | 中国進出・ECコンサル | その他",
+  "message": ""
+}
+```
+
+chinichi_OS の `Lead` は学生向け(顧問/SALES・JLPT・学校 等)の形のため、B2B 問い合わせをそのまま入れると意味が崩れる。
+公開受付APIでは「source=官網法人」でタグ付けし、未割当(プール)として作成 → 站内通知/企業微信で通知、等の設計を推奨(要相談)。
