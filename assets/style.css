@@ -426,6 +426,20 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
 .cta-band .btn--white { background: #fff; color: var(--red); }
 .cta-band .btn--white:hover { background: #ffe9e2; }
 
+/* ========== group entities (知日教育グループ) ========== */
+.grp { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.grp__col { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 24px 28px; }
+.grp__region {
+  font-size: 16px; font-weight: 700; color: var(--navy);
+  padding-bottom: 12px; margin-bottom: 6px; border-bottom: 2px solid var(--navy-soft);
+  display: flex; align-items: center; gap: 8px;
+}
+.grp__region small { color: var(--faint); font-weight: 400; font-size: 12px; }
+.grp__item { padding: 13px 0; border-bottom: 1px solid var(--line); }
+.grp__item:last-child { border-bottom: 0; padding-bottom: 0; }
+.grp__item strong { display: block; font-size: 12.5px; color: var(--red); font-weight: 700; margin-bottom: 3px; letter-spacing: .02em; }
+.grp__item span { font-size: 14px; color: var(--text); line-height: 1.7; }
+
 /* ========== representative (代表メッセージ) ========== */
 .rep { display: grid; grid-template-columns: .82fr 1.18fr; gap: 52px; align-items: start; }
 .rep__card {
@@ -453,6 +467,7 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
 
 /* ---------- responsive ---------- */
 @media (max-width: 960px) {
+  .grp { grid-template-columns: 1fr; }
   .rep { grid-template-columns: 1fr; gap: 30px; }
   .rep__card { position: static; max-width: 420px; }
   .routes { grid-template-columns: 1fr; }
