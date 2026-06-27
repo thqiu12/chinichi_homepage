@@ -42,9 +42,10 @@ python3 -m http.server 4178
 - [x] ロゴをローカル化(`assets/img/logo.png`)
 - [x] 各事業の詳細ページ(`corporate/university.html` 他)
 - [x] 共通トップ(学生/法人の2入口スプラッシュ)
-- [ ] 問い合わせフォームを chinichi_OS の公開リード受付APIへ接続 + 企業微信通知
-      ※ `assets/config.js` の `CHINICHI_LEAD_ENDPOINT` にURLを設定すれば送信開始。
-      chinichi_OS 側の `/api/leads` は認証必須・社内専用のため、**公開用の受付API**を別途用意する必要あり(セキュリティ要確認)。
+- [x] 問い合わせ通知 API を chinichi_OS に新設(`POST /api/public/corporate-inquiry`)
+      DBには落とさず、新規問い合わせを站内通知＋企業微信で法人窓口(既定 ADMIN ロール)へ通知。
+      メールは chinichi_OS にメール基盤が無いため未対応(後付け可)。
+      → 接続するには `assets/config.js` の `CHINICHI_LEAD_ENDPOINT` にそのURLを設定するだけ。
 - [ ] 提携大学・取引企業のロゴウォール素材差し替え
 - [ ] ヒーロー/事業の写真素材を追加(現状はテキスト中心)
 - [ ] Next.js への載せ替え検討(SSG/ISR・CMS連携)
