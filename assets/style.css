@@ -426,6 +426,20 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
 .cta-band .btn--white { background: #fff; color: var(--red); }
 .cta-band .btn--white:hover { background: #ffe9e2; }
 
+/* ========== history (沿革) ========== */
+.timeline { max-width: 760px; margin: 0 auto; position: relative; }
+.timeline::before { content: ""; position: absolute; left: 9px; top: 8px; bottom: 8px; width: 2px; background: #cdd8ee; }
+.tl-item { position: relative; padding: 0 0 26px 44px; }
+.tl-item:last-child { padding-bottom: 0; }
+.tl-item::before {
+  content: ""; position: absolute; left: 2px; top: 4px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #fff; border: 3px solid var(--navy);
+}
+.tl-item .yr { font-size: 14px; font-weight: 700; color: var(--red); margin-bottom: 4px; letter-spacing: .02em; }
+.tl-item .tl-body { margin: 0; font-size: 15px; color: var(--text); line-height: 1.85; }
+.tl-item .tl-body strong { color: var(--ink); font-weight: 700; }
+
 /* ========== philosophy (理念) ========== */
 .philosophy { background: var(--navy-soft); }
 .philo { display: grid; grid-template-columns: 300px 1fr; gap: 48px; align-items: center; }
