@@ -452,6 +452,8 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
 .tl-item .yr { font-size: 14px; font-weight: 700; color: var(--red); margin-bottom: 4px; letter-spacing: .02em; }
 .tl-item .tl-body { margin: 0; font-size: 15px; color: var(--text); line-height: 1.85; }
 .tl-item .tl-body strong { color: var(--ink); font-weight: 700; }
+.tl-item.has-photo { display: grid; grid-template-columns: 1fr 248px; gap: 22px; align-items: start; }
+.tl-photo { width: 248px; height: 155px; object-fit: cover; border-radius: 10px; border: 1px solid var(--line); display: block; }
 
 /* ========== philosophy (理念) ========== */
 .philosophy { background: var(--navy-soft); }
@@ -519,6 +521,8 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
 @media (max-width: 960px) {
   .philo { grid-template-columns: 1fr; gap: 28px; }
   .gallery { grid-template-columns: repeat(2, 1fr); }
+  .tl-item.has-photo { grid-template-columns: 1fr; gap: 12px; }
+  .tl-photo { width: 100%; max-width: 300px; }
   .grp { grid-template-columns: 1fr; }
   .rep { grid-template-columns: 1fr; gap: 30px; }
   .rep__card { position: static; max-width: 420px; }
