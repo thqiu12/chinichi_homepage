@@ -426,6 +426,29 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
 .cta-band .btn--white { background: #fff; color: var(--red); }
 .cta-band .btn--white:hover { background: #ffe9e2; }
 
+/* ========== philosophy (理念) ========== */
+.philosophy { background: var(--navy-soft); }
+.philo { display: grid; grid-template-columns: 300px 1fr; gap: 48px; align-items: center; }
+.philo__venn { display: flex; align-items: center; justify-content: center; }
+.philo__venn .circle { border-radius: 50%; display: grid; place-items: center; text-align: center; font-weight: 700; }
+.philo__venn .world {
+  width: 168px; height: 168px; background: #fff; color: var(--navy);
+  border: 1px solid #cdd8ee; font-size: 22px; z-index: 1;
+}
+.philo__venn .japan {
+  width: 134px; height: 134px; background: var(--navy); color: #fff;
+  margin-left: -46px; font-size: 19px; z-index: 2;
+  box-shadow: 0 10px 28px rgba(0, 47, 127, .22);
+}
+.philo__venn .circle small { display: block; font-size: 11px; opacity: .65; letter-spacing: .12em; margin-top: 3px; font-weight: 500; }
+.philo__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+.philo__list li {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 20px 24px;
+}
+.philo__list i { color: var(--red); font-size: 24px; line-height: 1.5; flex: 0 0 auto; }
+.philo__list span { font-size: 16px; font-weight: 500; color: var(--ink); line-height: 1.75; }
+
 /* ========== group entities (知日教育グループ) ========== */
 .grp { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 .grp__col { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 24px 28px; }
@@ -467,6 +490,7 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
 
 /* ---------- responsive ---------- */
 @media (max-width: 960px) {
+  .philo { grid-template-columns: 1fr; gap: 28px; }
   .grp { grid-template-columns: 1fr; }
   .rep { grid-template-columns: 1fr; gap: 30px; }
   .rep__card { position: static; max-width: 420px; }
