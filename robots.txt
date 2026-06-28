@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://corp.chinichi-edu.jp/sitemap.xml
+Sitemap: https://thqiu12.github.io/chinichi_homepage/sitemap.xml

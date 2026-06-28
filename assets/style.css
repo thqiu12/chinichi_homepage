@@ -141,7 +141,8 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
 .hero {
   position: relative;
   background:
-    linear-gradient(180deg, rgba(0,34,89,.92), rgba(0,47,127,.88)),
+    linear-gradient(95deg, rgba(0,28,74,.97) 34%, rgba(0,40,108,.82) 100%),
+    url(img/photos/nyugakushiki.jpg) center 30% / cover no-repeat,
     var(--navy);
   color: #fff;
   overflow: hidden;

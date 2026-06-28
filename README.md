@@ -63,8 +63,9 @@ python3 -m http.server 4178
 
 ## ⚠ デプロイ前チェックリスト(本番化に必須)
 
-1. **ドメイン置換**: 仮ドメイン `https://corp.chinichi-edu.jp` を本番ドメインに一括置換
-   （`*.html` の canonical/OGP、`sitemap.xml`、`robots.txt`）
+1. **ドメイン置換**: 現在は公開URL `https://thqiu12.github.io/chinichi_homepage` で
+   canonical/OGP/sitemap/robots を整合済み。独自ドメイン確定時に同URLを一括置換し、
+   `CNAME` ファイル追加＋DNS設定（github.io へ CNAME）
 2. **解析タグ有効化**: 各 `*.html` の `<head>` 末尾コメント内 GA4 (`G-XXXXXXXXXX`) と
    百度统计 (`BAIDU_SITE_ID`) を実IDに置換し、コメントを外す
 3. **フォーム接続**: `assets/config.js` の `CHINICHI_LEAD_ENDPOINT` に
