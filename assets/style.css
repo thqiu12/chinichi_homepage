@@ -626,6 +626,75 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
   .roster th, .roster td { padding: 9px 10px; }
 }
 
+/* ========== 知日美術 / ACG ブランドページ (CHIART orange accent) ========== */
+:root { --cacc: #ec6a1e; --cacc-deep: #cf5710; --cacc-soft: #fdf0e6; }
+.eyebrow--c { color: var(--cacc); }
+.page-hero.bg-art { background: linear-gradient(100deg, rgba(0,28,74,.94) 34%, rgba(0,34,89,.74)), url(img/photos/chiart.jpg) center 32% / cover no-repeat, var(--navy); }
+.page-hero.bg-acg { background: linear-gradient(100deg, rgba(20,12,40,.92) 30%, rgba(40,18,70,.66)), url(img/photos/acg-character.jpg) center 22% / cover no-repeat, #1a1230; }
+.page-hero.bg-acg .kicker, .page-hero.bg-art .kicker { color: #ffb877; }
+
+/* 作品ギャラリー (美術) */
+.artwall { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.artwall figure { margin: 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: #fff; }
+.artwall figure img { width: 100%; height: 210px; object-fit: cover; display: block; }
+.artwall figcaption { padding: 12px 15px; font-size: 13px; color: var(--text); font-weight: 700; }
+.artwall figcaption small { display: block; font-weight: 400; color: var(--faint); font-size: 11.5px; margin-top: 2px; letter-spacing: .02em; }
+.art-note { text-align: center; font-size: 12px; color: var(--faint); margin-top: 16px; }
+
+/* ACG 6学科方向グリッド */
+.dirgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.dir { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: #fff; transition: box-shadow .2s, transform .2s; }
+.dir:hover { box-shadow: var(--shadow); transform: translateY(-3px); }
+.dir__img { position: relative; }
+.dir__img img { width: 100%; height: 168px; object-fit: cover; display: block; }
+.dir__rate { position: absolute; right: 10px; bottom: 10px; background: var(--cacc); color: #fff; font-size: 12px; font-weight: 700; padding: 4px 11px; border-radius: 999px; box-shadow: 0 4px 14px rgba(0,0,0,.25); }
+.dir__b { padding: 18px 20px; }
+.dir__name { font-size: 17px; font-weight: 700; color: var(--ink); }
+.dir__name span { display: block; font-size: 11px; color: var(--cacc); font-weight: 700; letter-spacing: .12em; margin-top: 2px; }
+.dir__kw { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+.dir__kw span { font-size: 11.5px; background: var(--cacc-soft); color: var(--cacc-deep); border-radius: 6px; padding: 3px 9px; font-weight: 700; }
+.dir__u { font-size: 12.5px; color: var(--muted); line-height: 1.7; border-top: 1px solid var(--line); padding-top: 10px; }
+.dir__u b { color: var(--navy); font-weight: 700; }
+
+/* 進路 企業チップ */
+.complist { max-width: 980px; margin: 0 auto; display: grid; gap: 18px; }
+.compgrp { display: grid; grid-template-columns: 120px 1fr; gap: 18px; align-items: start; }
+.compgrp__l { font-size: 14px; font-weight: 700; color: var(--cacc); padding-top: 8px; }
+.compgrp__l small { display: block; color: var(--faint); font-weight: 400; font-size: 11px; letter-spacing: .08em; }
+.compgrp__c { display: flex; flex-wrap: wrap; gap: 8px; }
+.compgrp__c span { border: 1px solid var(--line); border-radius: 8px; padding: 7px 14px; font-size: 13px; color: var(--ink); background: #fff; font-weight: 700; }
+@media (max-width: 700px) { .compgrp { grid-template-columns: 1fr; gap: 6px; } }
+
+/* 課程ショーケース */
+.course { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.course__card { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: #fff; }
+.course__card img { width: 100%; height: 230px; object-fit: cover; display: block; background: var(--bg-soft); }
+.course__b { padding: 22px 24px; }
+.course__no { font-size: 12px; color: var(--cacc); font-weight: 700; letter-spacing: .1em; }
+.course__b h3 { font-size: 19px; margin: 4px 0 10px; }
+.course__b p { color: var(--muted); font-size: 14px; margin: 0 0 14px; }
+.course__tags { display: flex; flex-wrap: wrap; gap: 7px; }
+.course__tags span { font-size: 12px; background: var(--navy-soft); color: var(--navy); border-radius: 6px; padding: 4px 10px; font-weight: 700; }
+
+/* オレンジ枠の課題カード (mini--c) / 2カラム */
+.cards2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+.mini--c { border-top-color: var(--cacc); }
+.mini--c .ic { color: var(--cacc); }
+
+/* ブランド導線バナー */
+.xlink { display: flex; align-items: center; justify-content: space-between; gap: 20px; background: linear-gradient(100deg, var(--cacc), #f3902f); color: #fff; border-radius: 16px; padding: 30px 36px; }
+.xlink h3 { color: #fff; font-size: 21px; margin: 0 0 6px; }
+.xlink p { margin: 0; color: rgba(255,255,255,.92); font-size: 14px; }
+.xlink .btn--white { background: #fff; color: var(--cacc-deep); white-space: nowrap; }
+@media (max-width: 700px) { .xlink { flex-direction: column; align-items: flex-start; } }
+
+@media (max-width: 960px) {
+  .dirgrid { grid-template-columns: 1fr; }
+  .artwall { grid-template-columns: repeat(2, 1fr); }
+  .course { grid-template-columns: 1fr; }
+  .cards2 { grid-template-columns: 1fr; }
+}
+
 /* ========== a11y + legal + mobile sticky CTA ========== */
 .skip-link { position: absolute; left: -9999px; top: 0; z-index: 200; background: var(--navy); color: #fff; padding: 10px 18px; font-weight: 700; border-radius: 0 0 8px 0; }
 .skip-link:focus { left: 0; }
