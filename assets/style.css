@@ -451,6 +451,24 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
 }
 .flow__out strong { font-weight: 700; }
 
+/* ========== campus network (拠点・校舎) ========== */
+.region-label { font-size: 18px; font-weight: 700; color: var(--navy); margin: 0 0 18px; display: flex; align-items: center; gap: 8px; padding-bottom: 10px; border-bottom: 2px solid var(--navy-soft); }
+.region-label i { color: var(--red); }
+.region-label small { color: var(--faint); font-weight: 400; font-size: 13px; }
+.campus-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.campus { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #fff; transition: box-shadow .2s, transform .2s; }
+.campus:hover { box-shadow: var(--shadow); transform: translateY(-3px); }
+.campus img { width: 100%; height: 184px; object-fit: cover; display: block; }
+.campus__b { padding: 15px 17px; }
+.campus__name { font-size: 15.5px; font-weight: 700; color: var(--ink); }
+.campus__loc { font-size: 13px; color: var(--muted); margin-top: 5px; display: flex; align-items: center; gap: 5px; }
+.campus__loc i { color: var(--red); font-size: 15px; }
+.campus__tag { display: inline-block; margin-top: 10px; font-size: 11px; font-weight: 700; color: var(--navy); background: var(--navy-soft); padding: 4px 11px; border-radius: 999px; }
+.cn-sub { font-weight: 700; color: var(--ink); font-size: 14px; margin-bottom: 8px; }
+.city-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
+.city-chips span { border: 1px solid var(--line); border-radius: 999px; padding: 7px 16px; font-size: 13.5px; color: var(--navy); background: #fff; font-weight: 500; }
+.city-chips span.hq { background: var(--navy); color: #fff; border-color: var(--navy); }
+
 /* ========== facilities gallery (現場の風景) ========== */
 .gallery__feature { margin: 0 0 16px; border-radius: 14px; overflow: hidden; position: relative; border: 1px solid var(--line); }
 .gallery__feature img { width: 100%; height: auto; max-height: 440px; object-fit: cover; object-position: center 35%; display: block; }
@@ -561,6 +579,7 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
 @media (max-width: 960px) {
   .philo { grid-template-columns: 1fr; gap: 28px; }
   .gallery { grid-template-columns: repeat(2, 1fr); }
+  .campus-grid { grid-template-columns: 1fr; }
   .flow { grid-template-columns: repeat(2, 1fr); gap: 28px 12px; }
   .flow__step:not(:last-child)::after { display: none; }
   .tl-item.has-photo { grid-template-columns: 1fr; gap: 12px; }
@@ -577,6 +596,7 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
   .hero h1 { font-size: 34px; }
   .cards3 { grid-template-columns: 1fr; }
   .page-hero h1 { font-size: 30px; }
+  .campus-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 760px) {
   .nav { display: none; }
