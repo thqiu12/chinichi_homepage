@@ -273,6 +273,11 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
   color: var(--navy);
   background: #fff;
 }
+/* 提携大学ウォール — 3×3 グリッドで詰めて表示 */
+.uni-wall { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; max-width: 720px; margin: 26px auto 0; }
+.uni-wall span { text-align: center; }
+.uni-wall .more-uni { background: var(--navy-soft); color: var(--navy); border-color: #cdd8ee; font-weight: 700; }
+@media (max-width: 600px) { .uni-wall { grid-template-columns: repeat(2, 1fr); } }
 
 /* ---------- company profile ---------- */
 .profile { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: start; }
