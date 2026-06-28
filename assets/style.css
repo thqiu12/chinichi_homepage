@@ -142,7 +142,7 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
   position: relative;
   background:
     linear-gradient(95deg, rgba(0,28,74,.97) 34%, rgba(0,40,108,.82) 100%),
-    url(img/photos/nyugakushiki.jpg) center 30% / cover no-repeat,
+    url(img/photos/nyugaku-crowd.jpg) center / cover no-repeat,
     var(--navy);
   color: #fff;
   overflow: hidden;
@@ -374,6 +374,9 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
 .breadcrumb .sep { margin: 0 8px; color: var(--faint); }
 
 .page-hero { background: linear-gradient(180deg, var(--navy-deep), var(--navy)); color: #fff; }
+.page-hero.bg-univ { background: linear-gradient(95deg, rgba(0,28,74,.96) 36%, rgba(0,40,108,.80)), url(img/photos/nyugaku-crowd.jpg) center / cover no-repeat, var(--navy); }
+.page-hero.bg-recruit { background: linear-gradient(95deg, rgba(0,28,74,.96) 36%, rgba(0,40,108,.80)), url(img/photos/class-room.jpg) center 38% / cover no-repeat, var(--navy); }
+.page-hero.bg-training { background: linear-gradient(95deg, rgba(0,28,74,.96) 36%, rgba(0,40,108,.80)), url(img/photos/chimusic.jpg) center 40% / cover no-repeat, var(--navy); }
 .page-hero .container { padding: 64px 24px; }
 .page-hero .kicker { font-size: 13px; letter-spacing: .12em; color: #ffd24a; font-weight: 700; }
 .page-hero h1 { color: #fff; font-size: 38px; line-height: 1.4; margin: 14px 0 16px; max-width: 18em; }
