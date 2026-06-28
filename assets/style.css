@@ -430,6 +430,20 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
 .cta-band .btn--white { background: #fff; color: var(--red); }
 .cta-band .btn--white:hover { background: #ffe9e2; }
 
+/* ========== growth charts (成長の軌跡) ========== */
+.growth-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.gcard { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 24px 26px; }
+.gcard__t { font-size: 14px; font-weight: 700; color: var(--navy); }
+.gcard__big { font-size: 30px; font-weight: 700; color: var(--ink); margin: 4px 0 0; line-height: 1.1; }
+.gcard__big small { font-size: 14px; color: var(--muted); font-weight: 500; }
+.gcard__d { font-size: 12.5px; color: var(--red); font-weight: 700; margin-top: 4px; }
+.gbars { display: flex; align-items: flex-end; gap: 16px; height: 132px; margin-top: 20px; }
+.gbar { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+.gbar .v { font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 6px; white-space: nowrap; }
+.gbar i { width: 100%; background: linear-gradient(180deg, #4a9be6, #185fa5); border-radius: 6px 6px 0 0; display: block; min-height: 4px; }
+.gbar.now i { background: linear-gradient(180deg, var(--red), #b42c08); }
+.gbar .y { font-size: 11px; color: var(--muted); margin-top: 8px; }
+
 /* ========== foundation / strengths band (投資家視点) ========== */
 .strengths-band { background: linear-gradient(160deg, var(--navy-deep), var(--navy)); color: #fff; }
 .found-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
@@ -590,6 +604,7 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
   .gallery { grid-template-columns: repeat(2, 1fr); }
   .campus-grid { grid-template-columns: 1fr; }
   .found-grid { grid-template-columns: 1fr; }
+  .growth-grid { grid-template-columns: 1fr; }
   .flow { grid-template-columns: repeat(2, 1fr); gap: 28px 12px; }
   .flow__step:not(:last-child)::after { display: none; }
   .tl-item.has-photo { grid-template-columns: 1fr; gap: 12px; }
