@@ -430,6 +430,27 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
 .cta-band .btn--white { background: #fff; color: var(--red); }
 .cta-band .btn--white:hover { background: #ffe9e2; }
 
+/* ========== pathway flow (育成→進路) ========== */
+.flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.flow__step { position: relative; text-align: center; padding: 0 10px; }
+.flow__step:not(:last-child)::after {
+  content: "\2192"; position: absolute; right: -8px; top: 22px;
+  color: var(--red); font-size: 26px; font-weight: 700; line-height: 1;
+}
+.flow__ic {
+  width: 66px; height: 66px; border-radius: 50%;
+  background: var(--navy-soft); color: var(--navy);
+  display: grid; place-items: center; font-size: 30px; margin: 0 auto 14px;
+}
+.flow__no { font-size: 12px; color: var(--red); font-weight: 700; letter-spacing: .1em; }
+.flow__step h3 { font-size: 16px; margin: 5px 0 8px; }
+.flow__step p { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.7; }
+.flow__out {
+  margin-top: 34px; text-align: center; background: var(--navy-soft);
+  border-radius: 12px; padding: 20px 24px; font-size: 14.5px; color: var(--navy); font-weight: 500;
+}
+.flow__out strong { font-weight: 700; }
+
 /* ========== facilities gallery (現場の風景) ========== */
 .gallery__feature { margin: 0 0 16px; border-radius: 14px; overflow: hidden; position: relative; border: 1px solid var(--line); }
 .gallery__feature img { width: 100%; height: auto; max-height: 440px; object-fit: cover; object-position: center 35%; display: block; }
@@ -535,6 +556,8 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
 @media (max-width: 960px) {
   .philo { grid-template-columns: 1fr; gap: 28px; }
   .gallery { grid-template-columns: repeat(2, 1fr); }
+  .flow { grid-template-columns: repeat(2, 1fr); gap: 28px 12px; }
+  .flow__step:not(:last-child)::after { display: none; }
   .tl-item.has-photo { grid-template-columns: 1fr; gap: 12px; }
   .tl-photo { width: 100%; max-width: 300px; }
   .grp { grid-template-columns: 1fr; }
