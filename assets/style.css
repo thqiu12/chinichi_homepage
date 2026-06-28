@@ -273,11 +273,26 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
   color: var(--navy);
   background: #fff;
 }
-/* 提携大学ウォール — 3×3 グリッドで詰めて表示 */
-.uni-wall { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; max-width: 720px; margin: 26px auto 0; }
-.uni-wall span { text-align: center; }
-.uni-wall .more-uni { background: var(--navy-soft); color: var(--navy); border-color: #cdd8ee; font-weight: 700; }
-@media (max-width: 600px) { .uni-wall { grid-template-columns: repeat(2, 1fr); } }
+/* 合格実績ウォール — ティア別グループ表示 */
+.uni-tiers { max-width: 940px; margin: 24px auto 0; display: grid; gap: 14px; }
+.uni-tier { display: grid; grid-template-columns: 96px 1fr; gap: 18px; align-items: start; }
+.uni-tier__l { font-size: 13px; font-weight: 700; color: var(--red); padding-top: 8px; text-align: right; }
+.uni-tier__c { display: flex; flex-wrap: wrap; gap: 8px; }
+.uni-tier__c span { border: 1px solid var(--line); border-radius: 999px; padding: 7px 15px; font-size: 13px; color: var(--navy); background: #fff; font-weight: 500; }
+.uni-tier__c span.more-uni { background: var(--navy-soft); border-color: #cdd8ee; font-weight: 700; }
+@media (max-width: 700px) {
+  .uni-tier { grid-template-columns: 1fr; gap: 6px; }
+  .uni-tier__l { text-align: left; padding-top: 0; }
+}
+
+/* 合格ストーリー (CASES) */
+.cases { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+.case { border: 1px solid var(--line); border-left: 4px solid var(--red); border-radius: 12px; padding: 22px 24px; background: #fff; }
+.case__meta { font-size: 12px; color: var(--faint); font-weight: 700; letter-spacing: .04em; margin-bottom: 8px; }
+.case h3 { font-size: 16px; color: var(--ink); margin: 0 0 14px; line-height: 1.55; }
+.case__offers { display: flex; flex-wrap: wrap; gap: 6px; }
+.case__offers span { font-size: 12px; background: var(--navy-soft); color: var(--navy); border-radius: 6px; padding: 4px 10px; font-weight: 700; }
+@media (max-width: 760px) { .cases { grid-template-columns: 1fr; } }
 
 /* ---------- company profile ---------- */
 .profile { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: start; }
