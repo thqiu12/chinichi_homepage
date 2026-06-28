@@ -608,6 +608,24 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
 .reveal-on.is-in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .reveal-on { opacity: 1 !important; transform: none !important; transition: none; } }
 
+/* ========== results page (合格実績) ========== */
+.unicount { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.unicount .u { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 18px 12px; text-align: center; }
+.unicount .u b { display: block; font-size: 30px; font-weight: 700; color: var(--navy); line-height: 1; }
+.unicount .u b small { font-size: 14px; }
+.unicount .u span { display: block; font-size: 12.5px; color: var(--muted); margin-top: 8px; }
+.roster { width: 100%; border-collapse: collapse; font-size: 14px; background: #fff; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.roster th { background: var(--navy); color: #fff; text-align: left; padding: 12px 16px; font-weight: 700; font-size: 13px; }
+.roster td { padding: 11px 16px; border-top: 1px solid var(--line); }
+.roster td:first-child { font-weight: 700; color: var(--navy); white-space: nowrap; }
+.roster tr:nth-child(even) td { background: var(--bg-alt); }
+.roster .lv { font-size: 12px; color: var(--faint); }
+@media (max-width: 760px) {
+  .unicount { grid-template-columns: repeat(2, 1fr); }
+  .roster { font-size: 12.5px; }
+  .roster th, .roster td { padding: 9px 10px; }
+}
+
 /* ========== a11y + legal + mobile sticky CTA ========== */
 .skip-link { position: absolute; left: -9999px; top: 0; z-index: 200; background: var(--navy); color: #fff; padding: 10px 18px; font-weight: 700; border-radius: 0 0 8px 0; }
 .skip-link:focus { left: 0; }
