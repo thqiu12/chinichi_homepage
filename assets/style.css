@@ -431,7 +431,7 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
 .cta-band .btn--white:hover { background: #ffe9e2; }
 
 /* ========== growth charts (成長の軌跡) ========== */
-.growth-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.growth-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .gcard { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 24px 26px; }
 .gcard__t { font-size: 14px; font-weight: 700; color: var(--navy); }
 .gcard__big { font-size: 30px; font-weight: 700; color: var(--ink); margin: 4px 0 0; line-height: 1.1; }
