@@ -517,6 +517,16 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
   background: var(--bg-soft); border-radius: 0; font-size: 16px; font-weight: 700; color: var(--navy);
 }
 
+/* ========== a11y + legal + mobile sticky CTA ========== */
+.skip-link { position: absolute; left: -9999px; top: 0; z-index: 200; background: var(--navy); color: #fff; padding: 10px 18px; font-weight: 700; border-radius: 0 0 8px 0; }
+.skip-link:focus { left: 0; }
+:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+.legal h3 { font-size: 17px; margin: 28px 0 8px; color: var(--ink); }
+.legal p, .legal li { color: var(--text); font-size: 15px; line-height: 1.9; }
+.legal ul { padding-left: 20px; }
+.legal a { color: var(--navy); text-decoration: underline; }
+.mobile-cta { display: none; }
+
 /* ---------- responsive ---------- */
 @media (max-width: 960px) {
   .philo { grid-template-columns: 1fr; gap: 28px; }
@@ -546,6 +556,11 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
     padding: 22px 24px;
   }
   .burger { display: block; }
+  .mobile-cta { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 95; gap: 8px; padding: 8px 10px; background: rgba(255,255,255,.97); border-top: 1px solid var(--line); }
+  .mobile-cta a { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 13px; border-radius: 8px; font-weight: 700; font-size: 14px; }
+  .mobile-cta .tel { background: var(--navy-soft); color: var(--navy); }
+  .mobile-cta .ask { background: var(--red); color: #fff; }
+  body { padding-bottom: 70px; }
   .section { padding: 60px 0; }
   .section__title { font-size: 25px; }
   .hero .container { padding-top: 64px; padding-bottom: 64px; }
