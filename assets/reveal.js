@@ -6,7 +6,7 @@
   if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
   function run() {
-    var sel = ".section__head,.route,.svc,.mini,.proof,.stat,.grp__col,.rep__card,.rep__body,.tl-item,.flow__step,.philo,.timeline,.brands,.campus,.region-label,.city-chips";
+    var sel = ".section__head,.route,.svc,.mini,.proof,.stat,.grp__col,.rep__card,.rep__body,.tl-item,.flow__step,.philo,.timeline,.brands,.campus,.region-label,.city-chips,.found";
     var els = [].slice.call(document.querySelectorAll(sel));
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {

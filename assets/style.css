@@ -430,6 +430,15 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
 .cta-band .btn--white { background: #fff; color: var(--red); }
 .cta-band .btn--white:hover { background: #ffe9e2; }
 
+/* ========== foundation / strengths band (投資家視点) ========== */
+.strengths-band { background: linear-gradient(160deg, var(--navy-deep), var(--navy)); color: #fff; }
+.found-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.found { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.16); border-radius: 14px; padding: 26px 24px; transition: background .2s, transform .2s; }
+.found:hover { background: rgba(255,255,255,.10); transform: translateY(-3px); }
+.found i { font-size: 28px; color: #ffd24a; line-height: 1; }
+.found h3 { color: #fff; font-size: 17px; margin: 14px 0 8px; }
+.found p { color: rgba(255,255,255,.82); font-size: 14px; margin: 0; line-height: 1.85; }
+
 /* ========== pathway flow (育成→進路) ========== */
 .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
 .flow__step { position: relative; text-align: center; padding: 0 10px; }
@@ -580,6 +589,7 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
   .philo { grid-template-columns: 1fr; gap: 28px; }
   .gallery { grid-template-columns: repeat(2, 1fr); }
   .campus-grid { grid-template-columns: 1fr; }
+  .found-grid { grid-template-columns: 1fr; }
   .flow { grid-template-columns: repeat(2, 1fr); gap: 28px 12px; }
   .flow__step:not(:last-child)::after { display: none; }
   .tl-item.has-photo { grid-template-columns: 1fr; gap: 12px; }
