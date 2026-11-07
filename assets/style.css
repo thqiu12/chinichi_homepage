@@ -343,6 +343,29 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.
 }
 .form-actions { margin-top: 24px; text-align: center; }
 .form-note { font-size: 12px; color: var(--muted); text-align: center; margin-top: 14px; }
+.form-card button[disabled] { opacity: .6; cursor: not-allowed; }
+.form-card button[disabled]:hover { transform: none; }
+.form-status {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.7;
+  text-align: center;
+}
+.form-status[hidden] { display: none; }
+.form-status.is-error {
+  color: #9d2208;
+  background: var(--red-soft);
+  border: 1px solid #f3c3b6;
+}
+.form-status.is-pending {
+  color: var(--navy);
+  background: var(--navy-soft);
+  border: 1px solid #d5def0;
+}
+.form-status a { color: var(--navy); text-decoration: underline; }
 .form-done { display: none; text-align: center; padding: 30px; color: var(--navy); font-weight: 700; }
 
 /* ---------- footer ---------- */
