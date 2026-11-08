@@ -1,11 +1,11 @@
 /* サイト共通設定
-   法人問い合わせフォームの送信先(chinichi_OS の公開受付API)。
-   設定すると、新規問い合わせが站内通知＋企業微信で法人窓口(既定: ADMIN ロール)に届きます。
-   未設定の間は「成功表示のみ」のフォールバック動作になります。
-
-   エンドポイント: POST /api/public/corporate-inquiry
-   - ローカル開発: "http://localhost:3000/api/public/corporate-inquiry"
-   - 本番:         "https://<chinichi_OSのドメイン>/api/public/corporate-inquiry"
-                   (例: https://os.chinichi.com/... ／ 実ドメインに合わせて設定)
-   ※ chinichi_OS 側で CORPORATE_INQUIRY_ALLOW_ORIGIN を官網ドメインに設定推奨。 */
+   法人問い合わせフォームの送信先。
+   空のときは送信せず、画面には「届いていない」と出す（成功とは表示しない）。
+   受け付ける想定は POST /api/public/corporate-inquiry（JSON）。
+   本リポジトリだけでは実在する受付URLを確定できない。
+   公開されている関連システムにも当該ルートは無いため、初期値は空のままにする。
+   実在するURLが分かってから、空文字をそのURLへ置き換える。
+   パスは /api/public/corporate-inquiry を想定する。
+   成功と表示するのは、そのURLへの POST が HTTP 2xx で、
+   本文が空または JSON、かつ ok / success が false でないときだけ。 */
 window.CHINICHI_LEAD_ENDPOINT = "";

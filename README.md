@@ -41,6 +41,7 @@ assets/
 ```
 python3 -m http.server 4178
 # → http://localhost:4178
+node --test tests/form-inquiry.test.js
 ```
 
 ## 今後のTODO
@@ -48,10 +49,12 @@ python3 -m http.server 4178
 - [x] ロゴをローカル化(`assets/img/logo.png`)
 - [x] 各事業の詳細ページ(`corporate/university.html` 他)
 - [x] 共通トップ(学生/法人の2入口スプラッシュ)
-- [x] 問い合わせ通知 API を chinichi_OS に新設(`POST /api/public/corporate-inquiry`)
-      DBには落とさず、新規問い合わせを站内通知＋企業微信で法人窓口(既定 ADMIN ロール)へ通知。
-      メールは chinichi_OS にメール基盤が無いため未対応(後付け可)。
-      → 接続するには `assets/config.js` の `CHINICHI_LEAD_ENDPOINT` にそのURLを設定するだけ。
+- [ ] 問い合わせの受信先を接続する
+      フォームは `POST /api/public/corporate-inquiry`（JSON）を想定する。
+      `assets/config.js` の `CHINICHI_LEAD_ENDPOINT` は空。
+      公開されている Graduate-student_CHINICHI_OS の main と既存ブランチに、このルートは無い。
+      未設定・通信失敗・2xx 以外では成功と表示しない。入力は残し、ボタンを戻して再送できる。
+      実在する受付URLが確定してから config に設定する。メール基盤は別途。
 - [x] 公式グループ資料に基づく情報の正確化(代表略歴・数字・拠点・ブランド)
 - [x] 理念 / グループ全体像 / 沿革 / 現場写真ギャラリーの追加
 - [x] SEO基盤(OGP/Twitter・favicon・JSON-LD・canonical・robots・sitemap)
@@ -68,8 +71,9 @@ python3 -m http.server 4178
    `CNAME` ファイル追加＋DNS設定（github.io へ CNAME）
 2. **解析タグ有効化**: 各 `*.html` の `<head>` 末尾コメント内 GA4 (`G-XXXXXXXXXX`) と
    百度统计 (`BAIDU_SITE_ID`) を実IDに置換し、コメントを外す
-3. **フォーム接続**: `assets/config.js` の `CHINICHI_LEAD_ENDPOINT` に
-   `https://<chinichi_OSドメイン>/api/public/corporate-inquiry` を設定
+3. **フォーム接続**: 実在する受付URLが分かってから `assets/config.js` の
+   `CHINICHI_LEAD_ENDPOINT` に `https://<受付のドメイン>/api/public/corporate-inquiry` を設定する。
+   空のまま公開しても成功とは表示されない。URLを決めるまでは法人窓口の電話を案内する。
 4. **CORS**: chinichi_OS 側で `CORPORATE_INQUIRY_ALLOW_ORIGIN` を本番ドメインに設定
 5. **（任意）パフォーマンス**: Noto Sans JP のサブセット自前ホスト、Tabler を使用アイコンのみに、
    画像の WebP 化(現状は jpg/png でローカル最適化済み)
@@ -88,5 +92,13 @@ python3 -m http.server 4178
 }
 ```
 
-chinichi_OS の `Lead` は学生向け(顧問/SALES・JLPT・学校 等)の形のため、B2B 問い合わせをそのまま入れると意味が崩れる。
-公開受付APIでは「source=官網法人」でタグ付けし、未割当(プール)として作成 → 站内通知/企業微信で通知、等の設計を推奨(要相談)。
+受付側の保存形式はこのリポジトリからは確定できない。学生向けの項目へ B2B の問い合わせをそのまま入れないこと。
+
+成功とみなす応答（このリポジトリで確認できる範囲）:
+
+- HTTP ステータスが 2xx
+- 本文が空、または JSON
+- JSON オブジェクトの場合、`ok` と `success` が `false` ではない
+
+本文の項目一覧は受付実装がこのリポジトリに無いため、それ以上は要求しない。
+4xx / 5xx、通信失敗、HTML、壊れた JSON、`ok: false` / `success: false` は未達とし、成功とは表示しない。
