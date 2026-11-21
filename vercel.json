@@ -1,0 +1,5 @@
+{
+  "buildCommand": "NOINDEX=1 python3 build.py",
+  "outputDirectory": "_site",
+  "installCommand": "true"
+}

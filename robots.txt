@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://thqiu12.github.io/chinichi_homepage/sitemap.xml
