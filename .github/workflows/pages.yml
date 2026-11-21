@@ -3,6 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -11,20 +12,42 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: フォーム送信のテスト
+        run: node --test tests/form-inquiry.test.js
+      - name: サイト生成
+        # 独自ドメイン（chinichi-edu.jp）へ切り替えるまでは github.io のプロジェクトURLで公開する。
+        # 切り替え後は SITE_PREFIX を空にし、static/CNAME を置く（README「独自ドメインへの切り替え」）。
+        env:
+          SITE_PREFIX: ${{ vars.SITE_PREFIX || '/chinichi_homepage' }}
+        run: python3 build.py && python3 tools/check_site.py
+      - uses: actions/configure-pages@v5
+        if: github.event_name != 'pull_request'
+      - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request'
+        with:
+          path: _site
+
   deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
       - id: deployment
         uses: actions/deploy-pages@v4
