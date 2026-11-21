@@ -163,6 +163,7 @@ PAGES, SITEMAP = [], []
 def write(path, text):
     if PREFIX:
         text = re.sub(r'((?:href|src|action)=["\']?)/(?!/)', r"\1" + PREFIX + "/", text)
+        text = re.sub(r"(url=)/(?!/)", r"\1" + PREFIX + "/", text)  # 旧URL転送の meta refresh
         text = text.replace("url(/assets/", f"url({PREFIX}/assets/").replace("url(/static/", f"url({PREFIX}/static/")
     out = DIST / path.lstrip("/") / "index.html" if path.endswith("/") else DIST / path.lstrip("/")
     out.parent.mkdir(parents=True, exist_ok=True)
