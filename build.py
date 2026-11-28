@@ -348,9 +348,9 @@ def render_teachers():
     emit("ja", "/teachers/", "講師紹介", "知日塾の講師紹介：文理学部・大学院（文系・理系）・美術・音楽・日本語の講師。出身大学と担当科目。", body, ld(bc("ja", items)))
 
 
-def render_news():
+def render_news(extra=()):
     posts = json.loads((SRC / "data" / "posts.json").read_text())
-    lis = "".join(f'<li><a href="{x["path"]}"><span>{esc(x["title"])}</span><time>{x["date"] or x["category"]}</time></a></li>' for x in posts)
+    lis = "".join(f'<li><a href="{x["ja_path"]}"><span>{esc(x["titleJa"])}</span><time>{x["date"]}</time></a></li>' for x in extra) + "".join(f'<li><a href="{x["path"]}"><span>{esc(x["title"])}</span><time>{x["date"] or x["category"]}</time></a></li>' for x in posts)
     items = [(None, "ニュース")]
     body = pagehead("ja", "/news/", items, "ニュース・合格速報", "合格実績、進学情報、イベントのお知らせ。") + f'<div class="w content"><ul class="list">{lis}</ul></div>'
     emit("ja", "/news/", "ニュース・合格速報", "知日塾のニュース：合格実績、進学情報、イベントのお知らせ。", body, ld(bc("ja", items)), priority="0.6")
@@ -399,6 +399,44 @@ def post_cards(items, limit=12):
     return f'<div class="pcards">{"".join(out)}</div>' if out else ""
 
 
+JA_KIND = {"NEWS": "校舎ニュース", "EVENT": "イベント・説明会", "RESULT": "合格速報", "VOICE": "合格者の声", "TEACHER": "講師紹介"}
+JA_DIV = {"文理学部": "学部（文系・理系）", "大学院": "大学院", "美术": "美術", "音乐": "音楽", "体育": "スポーツ", "EJU·日语": "EJU・日本語"}
+JP_CAMPUS_JA = {
+    "tokyo": ("知日塾 東京本部（高田馬場）", "東京都新宿区高田馬場1-34-8 大輝ビル2F", "高田馬場駅周辺"),
+    "osaka": ("知日塾 大阪校", "大阪府大阪市中央区南本町3-4-7 第一住建御堂筋本町ビル3F", "本町駅から約150m"),
+    "kyoto": ("知日塾 京都校", "京都府京都市中京区河原町通蛸薬師下る塩屋町327-3 3F", "河原町駅から徒歩170m"),
+}
+
+
+def hreflang(x):
+    return (f'<link rel="alternate" hreflang="ja" href="{BASE}{x["ja_path"]}"><link rel="alternate" hreflang="zh-CN" href="{BASE}{x["path"]}">'
+            if x.get("ja_path") else "")
+
+
+def render_site_posts_ja(posts):
+    """日文版のある記事 → /news/s-<id>/（日本語）。一覧は /news/ に混ぜる（render_news）。"""
+    for x in [p for p in posts if p.get("ja_path")]:
+        name, addr, access = JP_CAMPUS_JA[x["campusSlug"]]
+        items = [("/news/", "ニュース"), (None, x["titleJa"])]
+        label = JA_KIND.get(x["kind"], "") + (f'・{JA_DIV[x["division"]]}' if x.get("division") in JA_DIV else "")
+        ev = f'　開催：{x["eventAt"][:16].replace("T", " ")}' if x.get("eventAt") else ""
+        meta = f'<p class="meta"><time datetime="{x["date"]}">{x["date"]}</time>　{esc(name)}　{esc(label)}{esc(ev)}</p>'
+        # 配图说明は中国語なので、日本語ページでは日本語の標題を代替テキストにする（簡体字を載せない）
+        figs = "".join(f"<figure>{_post_img({**im, 'alt': x['titleJa']})}</figure>" for im in x["images"])
+        body = (pagehead("ja", "/news/", items, esc(x["titleJa"]), x.get("summaryJa") or "", meta, img=False) +
+                f'<div class="w content"><div class="layout"><article class="prose">{_paras(x["bodyJa"])}{figs}'
+                f'<h2>{esc(name)}</h2><p>所在地：{esc(addr)}（{esc(access)}）<br>入塾相談：{TEL_JP}</p>'
+                f'<p><a href="{x["path"]}">中国語版を読む</a>　<a href="/news/">← ニュース一覧</a></p></article>{SIDE["ja"]}</div></div>')
+        art = {"@context": "https://schema.org", "@type": "NewsArticle", "headline": x["titleJa"], "inLanguage": "ja",
+               "datePublished": x.get("publishedAt"), "dateModified": x.get("updatedAt"), "author": {"@id": BASE + "/#org"},
+               "publisher": {"@id": BASE + "/#org"}, "mainEntityOfPage": BASE + x["ja_path"],
+               "contentLocation": {"@type": "Place", "name": name, "address": addr}}
+        if x["images"]:
+            art["image"] = [BASE + im["src"] + "-1600.jpg" for im in x["images"]]
+        desc = (x.get("summaryJa") or re.sub(r"\s+", " ", x["bodyJa"]))[:120]
+        emit("ja", x["ja_path"], x["titleJa"], desc, body, ld(bc("ja", items), art) + hreflang(x), priority="0.6")
+
+
 def render_site_posts(posts):
     items = [(None, "日本校区动态")]
     lead = "东京、大阪、京都校区的活动、讲座、合格喜报和学员故事，由各校区老师撰写、校区负责人审核后发布。"
@@ -408,6 +446,7 @@ def render_site_posts(posts):
     emit("zh", "/zh/news/", "日本校区动态", "知日塾东京、大阪、京都校区的最新动态：活动讲座、合格喜报、学员故事。", body, ld(bc("zh", items)), priority="0.7")
     for x in posts:
         name, addr, access, tel = JP_CAMPUS_ZH[x["campusSlug"]]
+        ja_link = f'<a href="{x["ja_path"]}" lang="ja">日本語版</a>　' if x.get("ja_path") else ""
         items = [("/zh/news/", "日本校区动态"), (None, x["title"])]
         ev = f'　活动时间：{x["eventAt"][:16].replace("T", " ")}' if x.get("eventAt") else ""
         meta = (f'<p class="meta">{esc(x["campus"])} · {esc(x.get("kindLabel") or "")}{" · " + esc(x["division"]) if x.get("division") else ""}'
@@ -417,7 +456,7 @@ def render_site_posts(posts):
         art_body = (pagehead("zh", "/zh/news/", items, esc(x["title"]), x.get("summary") or "", meta, img=False) +
                     f'<div class="w content"><div class="layout"><article class="prose">{_paras(x["body"])}{figs}'
                     f'<h2>{esc(name)}</h2><p>地址：{esc(addr)}（{esc(access)}）<br>电话：{esc(tel)}</p>'
-                    f'<p><a href="/zh/news/">← 日本校区动态</a></p></article>{SIDE["zh"]}</div></div>')
+                    f'<p>{ja_link}<a href="/zh/news/">← 日本校区动态</a></p></article>{SIDE["zh"]}</div></div>')
         art = {"@context": "https://schema.org", "@type": "NewsArticle", "headline": x["title"], "inLanguage": "zh-CN",
                "datePublished": x.get("publishedAt"), "dateModified": x.get("updatedAt"), "author": {"@id": BASE + "/#org"},
                "publisher": {"@id": BASE + "/#org"}, "mainEntityOfPage": BASE + x["path"],
@@ -425,7 +464,7 @@ def render_site_posts(posts):
         if x["images"]:
             art["image"] = [BASE + im["src"] + "-1600.jpg" for im in x["images"]]
         desc = (x.get("summary") or re.sub(r"\s+", " ", x["body"]))[:120]
-        emit("zh", x["path"], x["title"], desc, art_body, ld(bc("zh", items), art), priority="0.6")
+        emit("zh", x["path"], x["title"], desc, art_body, ld(bc("zh", items), art) + hreflang(x), priority="0.6")
 
 
 # ───────── 旧URLの転送（GitHub Pages はサーバー側301が使えないので、meta refresh + canonical） ─────────
@@ -473,11 +512,14 @@ def main():
     shutil.copytree(ROOT / "static", DIST / "static")
     shutil.copytree(ROOT / "assets", DIST / "assets", ignore=shutil.ignore_patterns("style.css"))
     (DIST / ".nojekyll").write_text("")
-    posts = render_news()
     jp_posts = site_posts.load(DIST)
+    ja_posts = [x for x in jp_posts if x.get("ja_path")]
+    posts = render_news(ja_posts)
+    render_site_posts_ja(jp_posts)
     if jp_posts:
         NAV["zh"].insert(2, ("/zh/news/", "校区动态"))
-    latest = {"ja": '<ul class="list">' + "".join(f'<li><a href="{x["path"]}"><span>{esc(x["title"])}</span><time>{x["date"] or x["category"]}</time></a></li>' for x in posts[:6]) + "</ul>",
+    ja_feed = [{"path": x["ja_path"], "title": x["titleJa"], "date": x["date"], "category": ""} for x in ja_posts] + posts
+    latest = {"ja": '<ul class="list">' + "".join(f'<li><a href="{x["path"]}"><span>{esc(x["title"])}</span><time>{x["date"] or x["category"]}</time></a></li>' for x in ja_feed[:6]) + "</ul>",
               "zh": ('<ul class="list">' + "".join(f'<li><a href="{x["path"]}"><span>【{esc(x["campus"])}】{esc(x["title"])}</span><time>{x["date"]}</time></a></li>' for x in jp_posts[:6]) + "</ul>") if jp_posts else ""}
     for lang in ("ja", "zh"):
         for p in sorted((SRC / lang).glob("*")):
@@ -486,8 +528,10 @@ def main():
                 if jp_posts and page["path"] == "/zh/access/":
                     page["body"] += f'<h2>日本校区最新动态</h2>{post_cards(jp_posts, 6)}<p><a href="/zh/news/">看全部日本校区动态 →</a></p>'
                 if jp_posts and page["path"] == "/access/":
-                    page["body"] += ('<h2>各校舎からのお知らせ</h2><p>東京・大阪・京都の各校舎のイベント、説明会、合格のお知らせは、'
-                                     '留学生向けに中国語で掲載しています。</p><p><a href="/zh/news/">校舎のお知らせ（中国語）を見る →</a></p>')
+                    ja_list = "".join(f'<li><a href="{x["ja_path"]}"><span>{esc(x["titleJa"])}</span><time>{x["date"]}</time></a></li>' for x in ja_posts[:6])
+                    page["body"] += ('<h2>各校舎からのお知らせ</h2>' + (f'<ul class="list">{ja_list}</ul>' if ja_list else "") +
+                                     '<p>東京・大阪・京都の各校舎のイベント、説明会、合格のお知らせは、留学生向けに中国語でも掲載しています。</p>'
+                                     '<p><a href="/zh/news/">校舎のお知らせ（中国語）を見る →</a></p>')
                 render_page(page, latest)
     render_site_posts(jp_posts)
     render_frags()

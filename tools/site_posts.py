@@ -74,7 +74,15 @@ def load(dist: Path):
             if ok:
                 imgs.append({"src": f"/static/img/posts/{pid}-{k}", "alt": im.get("alt", "")})
         x = {k: p.get(k) for k in ("id", "campus", "campusSlug", "division", "kind", "kindLabel", "title", "summary", "body",
-                                    "eventAt", "publishedAt", "updatedAt")}
-        x.update(images=imgs, date=(p.get("publishedAt") or "")[:10], path=f"/zh/news/{pid}/")
+                                    "eventAt", "publishedAt", "updatedAt", "titleJa", "summaryJa", "bodyJa")}
+        x.update(images=imgs, date=(p.get("publishedAt") or "")[:10], path=f"/zh/news/{pid}/", ja_path=None)
+        # 日文版：標題と本文がそろい、Shift_JIS にない漢字（簡体字など）がないときだけ日本語ページを出す
+        ja = f'{x.get("titleJa") or ""}{x.get("summaryJa") or ""}{x.get("bodyJa") or ""}'
+        if x.get("titleJa") and x.get("bodyJa"):
+            bad = sorted({c for c in ja if "一" <= c <= "鿿" and not c.encode("shift_jis", errors="ignore")})
+            if bad:
+                print(f"  ! 日文版に日本で使わない漢字 {''.join(bad)} があるため日本語ページは出しません：{p['id']}")
+            else:
+                x["ja_path"] = f"/news/s-{pid}/"
         items.append(x)
     return sorted(items, key=lambda x: x.get("publishedAt") or "", reverse=True)
