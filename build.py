@@ -61,8 +61,7 @@ def head(lang, title, desc, path, extra="", corp=False):
     links = "".join(f'<a href="{u}"{" class=on aria-current=page" if u != "/zh/" and path.startswith(u) or u == path else ""}>{t}</a>' for u, t in NAV[lang])
     lu, lt = L[lang]["lang"]
     big = "".join(f'<a href="{u}">{t}</a>' for u, t in NAV[lang]) + f'<a href="{L[lang]["cta_href"]}">{L[lang]["cta"]}</a><a href="{lu}">{lt}</a>'
-    fonts = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
-             '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap">') if lang == "ja" else ""
+    fonts = ""  # 日本語は端末のフォント（ヒラギノ・游ゴシック・メイリオ・Noto Sans CJK）を使う。Web フォントはスマホで表示が遅くなるため使わない
     robots = '<meta name="robots" content="noindex">' if NOINDEX else ""
     alt = (f'<link rel="alternate" hreflang="ja" href="{BASE}/"><link rel="alternate" hreflang="zh-CN" href="{BASE}/zh/">' if path in ("/", "/zh/") else "")
     return f"""<!doctype html>
@@ -82,7 +81,7 @@ def head(lang, title, desc, path, extra="", corp=False):
 </head>
 <body>
 <a class="skip" href="#main">{L[lang]['skip']}</a>
-<header class="g"><a class="lg" href="{'/' if lang == 'ja' else '/zh/'}"><img src="/assets/img/logo.png" alt="知日塾 CHINICHI" width="88" height="34"></a><nav aria-label="メイン">{links}<a class="lang" href="{lu}" hreflang="{'zh' if lang == 'ja' else 'ja'}">{lt}</a><a class="c" href="{L[lang]['cta_href']}">{L[lang]['cta']}</a><button class="mbtn" type="button" aria-label="{L[lang]['menu']}" aria-expanded="false"><i></i><i></i></button></nav></header>
+<header class="g"><a class="lg" href="{'/' if lang == 'ja' else '/zh/'}"><img src="/assets/img/logo.png" alt="知日塾 CHINICHI" width="88" height="34" loading="eager"></a><nav aria-label="メイン">{links}<a class="lang" href="{lu}" hreflang="{'zh' if lang == 'ja' else 'ja'}">{lt}</a><a class="c" href="{L[lang]['cta_href']}">{L[lang]['cta']}</a><button class="mbtn" type="button" aria-label="{L[lang]['menu']}" aria-expanded="false"><i></i><i></i></button></nav></header>
 <div class="ov" aria-label="menu"><div>{big}</div><p>{'入塾相談' if lang == 'ja' else '在日咨询'} {TEL_JP} · {'法人' if lang == 'ja' else '国内'} {TEL_CORP if lang == 'ja' else TEL_CN}</p></div>
 """
 
@@ -104,7 +103,7 @@ def foot(lang):
                           ("/news/", "ニュース"), ("/recruit/", "採用情報"), ("/contact/", "お問い合わせ")]),
                 ("法人の方へ", [("/corporate/", "法人トップ"), ("/corporate/university/", "大学提携・送り出し"), ("/corporate/recruit/", "人材紹介・採用支援"),
                              ("/corporate/training/", "法人研修・語学"), ("/privacy/", "プライバシーポリシー")])]
-    c = "".join(f"<div><h4>{h}</h4><ul>{''.join(f'<li><a href=\"{u}\">{t}</a></li>' for u, t in items)}</ul></div>" for h, items in cols)
+    c = "".join(f"<div><p class=\"fh\">{h}</p><ul>{''.join(f'<li><a href=\"{u}\">{t}</a></li>' for u, t in items)}</ul></div>" for h, items in cols)
     return f"""{cta}
 <footer><div class="w">
 <div><img src="/assets/img/logo.png" alt="知日塾" width="88" height="34">
@@ -143,7 +142,7 @@ def pagehead(lang, path, items, h1, lead="", meta="", img=None, cta=None):
     color = PAGE_COLOR.get(path)
     btn = f'<p style="margin-top:22px"><a class="btn" href="{cta[1]}">{esc(cta[0])} →</a></p>' if cta else ""
     return (f'<section class="pagehead{" has-img" if img else ""}"{f" style=--c:{color}" if color else ""}>'
-            f'{f"<img src={chr(34)}{img}{chr(34)} alt={chr(34)}{chr(34)}>" if img else ""}<div class="w">{crumb(lang, items)}'
+            f'{f"<img src={chr(34)}{img}{chr(34)} alt={chr(34)}{chr(34)} fetchpriority=high loading=eager>" if img else ""}<div class="w">{crumb(lang, items)}'
             f'{f"<em class=tag>{tag}</em>" if tag else ""}<h1>{h1}</h1>{f"<p class=lead>{esc(lead)}</p>" if lead else ""}{meta}{btn}</div></section>')
 
 
@@ -160,10 +159,43 @@ SIDE = {"ja": f"""<aside class="side">
 PAGES, SITEMAP = [], []
 
 
+IMG_RE = re.compile(r'<img\b[^>]*>')
+
+
+def optimize_imgs(text):
+    """写真の srcset（400/800/1600）、首屏以下の遅延読み込み、首屏切替の2枚目以降の後読み。"""
+    def srcset(tag):
+        m = re.search(r'src="(/static/img/site/[\w-]+)-(800|1600)\.jpg"', tag)
+        if not m or "srcset=" in tag:
+            return tag
+        b = m.group(1)
+        if m.group(2) == "1600":
+            add = f' srcset="{b}-800.jpg 800w, {b}-1600.jpg 1600w" sizes="100vw"'
+        else:
+            add = f' srcset="{b}-400.jpg 400w, {b}-800.jpg 800w" sizes="(max-width: 900px) 50vw, 400px"'
+        return tag[:-1] + add + ">"
+    text = IMG_RE.sub(lambda m: srcset(m.group(0)), text)
+    # 首屏の写真切替：1枚目は最優先、2枚目以降は data-src にして load 後に取得
+    def ss(block):
+        n = [0]
+        def one(m):
+            tag = m.group(0)
+            n[0] += 1
+            if n[0] == 1:
+                return tag[:-1] + ' fetchpriority="high" loading="eager">'
+            return tag.replace(' src="', ' data-src="').replace(' srcset="', ' data-srcset="')
+        return IMG_RE.sub(one, block.group(0))
+    text = re.sub(r'<div class="ss">.*?</div></section>', ss, text, flags=re.S)
+    # それ以外で loading 指定のない画像は遅延読み込み
+    return IMG_RE.sub(lambda m: m.group(0) if "loading=" in m.group(0) else m.group(0)[:-1] + ' loading="lazy" decoding="async">', text)
+
+
 def write(path, text):
+    text = optimize_imgs(text)
     if PREFIX:
         text = re.sub(r'((?:href|src|action)=["\']?)/(?!/)', r"\1" + PREFIX + "/", text)
         text = re.sub(r"(url=)/(?!/)", r"\1" + PREFIX + "/", text)  # 旧URL転送の meta refresh
+        text = re.sub(r'((?:data-srcset|srcset)="[^"]*)', lambda m: re.sub(r'(^|=")/|(, )/', lambda k: (k.group(1) or k.group(2) or "") + PREFIX + "/", m.group(1)), text)
         text = text.replace("url(/assets/", f"url({PREFIX}/assets/").replace("url(/static/", f"url({PREFIX}/static/")
     out = DIST / path.lstrip("/") / "index.html" if path.endswith("/") else DIST / path.lstrip("/")
     out.parent.mkdir(parents=True, exist_ok=True)

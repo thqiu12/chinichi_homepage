@@ -156,7 +156,7 @@ main>section.s:last-of-type{padding-bottom:0}
 .hbtn{font-size:16px;padding:14px 20px}.prose table{display:block;overflow-x:auto}.prose th:first-child,.prose td:first-child{white-space:nowrap}.hero .sticker{width:112px;top:auto;bottom:46%;right:4%}.hero .sticker b{font-size:38px}.hero .sticker small{font-size:10px}.list li a{grid-template-columns:1fr}.h2 .more{margin-left:0}}
 
 /* ───── 日本サイト：日本語フォント、講師一覧、言語切替 ───── */
-html[lang="ja"]{--zh:"Noto Sans JP","Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic","Meiryo",sans-serif}
+html[lang="ja"]{--zh:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic UI","YuGothic","Yu Gothic","Meiryo","Noto Sans CJK JP","Noto Sans JP",sans-serif}
 html[lang="ja"] body{font-family:var(--zh);font-feature-settings:"palt" 1}
 header.g nav a.lang{border:2px solid rgba(255,255,255,.5);padding:4px 10px;margin:0 6px;font-size:12.5px}
 .tgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin:0 0 50px}
@@ -167,3 +167,15 @@ header.g nav a.lang{border:2px solid rgba(255,255,255,.5);padding:4px 10px;margi
 .tdept{display:flex;align-items:baseline;gap:14px;margin:10px 0 18px}.tdept h2{margin:0;font-weight:900;font-size:clamp(24px,3vw,34px)}.tdept span{font-family:var(--num);color:var(--o);font-weight:800}
 .corp{padding-bottom:20px}.corp>section:first-child{padding-top:64px}
 @media(max-width:900px){.tgrid{grid-template-columns:1fr 1fr;gap:12px}.tcard b{font-size:15px}}
+
+/* ───── Lighthouse 対応（2026-11-28）：小さい文字が乗る橙は濃い橙(#C2410C, 白文字で5.2:1)、ロゴの縦横比、見出し順 ───── */
+:root{--o-t:#C2410C}
+header.g nav a.c,.hbtn,.btn,.cta,.ov,.cd .s::before{background:var(--o-t)}
+.h2 em,.sh .no{color:var(--o-t)}
+.mq b{color:#fff}
+.cd .t{background:#fff;color:var(--ink);border:2px solid var(--c);border-left-width:8px;padding:1px 10px}
+.tag{background:#fff;color:var(--ink);border-left:8px solid var(--c,var(--o-t))}
+header.g img,footer img{width:auto}
+footer .fh{color:#fff;margin:0 0 10px;font-size:15px;font-weight:700}
+.corp .eyebrow,.corp .eyebrow--c,.corp .eyebrow--g{color:var(--o-t)}
+.corp .btn--primary{background:var(--o-t)}.corp .btn--white{color:var(--ink)}

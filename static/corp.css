@@ -483,12 +483,12 @@
 .corp .section__title{font-size: 25px;}
 .corp .form-grid{grid-template-columns: 1fr;}}
 /* ── 方案 G 覆盖：配色、粗框、错位阴影 ── */
-.corp{--navy:#093D90;--navy-deep:#071A3F;--navy-soft:#EEF2F8;--red:#E94E14;--red-soft:#FDEBE3;--ink:#0B0F19;--text:#262B36;
+.corp{--faint:#6B7280;--muted:#4B5563;--navy:#093D90;--navy-deep:#071A3F;--navy-soft:#EEF2F8;--red:#E94E14;--red-soft:#FDEBE3;--ink:#0B0F19;--text:#262B36;
   --line:#E3E6EC;--bg-alt:#F4F6F9;--radius:0px;--shadow:none;font-family:inherit;font-size:16px;color:var(--text);background:transparent;line-height:1.85}
 .corp h1,.corp h2,.corp h3,.corp h4{color:var(--ink);font-weight:900}
 .corp .section{padding:96px 0 0}.corp .section--alt{background:transparent}
 .corp .section__title{font-size:clamp(30px,4.2vw,56px);letter-spacing:-.03em;line-height:1.15}
-.corp .eyebrow,.corp .eyebrow--c,.corp .eyebrow--g{color:var(--red);font-weight:800;letter-spacing:.2em;background:none;padding:0}
+.corp .eyebrow,.corp .eyebrow--c,.corp .eyebrow--g{color:#C2410C;font-weight:800;letter-spacing:.2em;background:none;padding:0}
 .corp .section__lead{color:#3b4150}
 .corp .mini,.corp .case,.corp .proof,.corp .stat,.corp .gcard,.corp .course__card,.corp .coach,.corp .dir,.corp .rep__card,.corp .campus,
 .corp .form-card,.corp .found,.corp .svc,.corp .route,.corp .grp__item,.corp .uni-tier,.corp .compgrp,.corp .step,.corp .flow__step{
@@ -497,11 +497,13 @@
 .corp .case:nth-child(3n),.corp .mini:nth-child(3n),.corp .proof:nth-child(3n){box-shadow:6px 6px 0 var(--navy)!important}
 .corp .big,.corp .num,.corp .gcard__big{font-family:"DIN Alternate","Bahnschrift","Avenir Next","Segoe UI",sans-serif;font-weight:800;color:var(--red)}
 .corp .btn{border-radius:0;font-weight:900}
-.corp .btn--primary{background:var(--red);color:#fff;box-shadow:5px 5px 0 var(--ink)}
-.corp .btn--white{background:#fff;color:var(--ink);box-shadow:5px 5px 0 #FFD23F}
+.corp .btn--primary{background:#C2410C;color:#fff;box-shadow:5px 5px 0 var(--ink)}
+.corp .btn--white,.corp .xlink .btn{background:#fff;color:var(--ink)!important;box-shadow:5px 5px 0 #FFD23F}
 .corp .btn--ghost{border:3px solid var(--ink);color:var(--ink);background:#fff}
 .corp .faq details{border:3px solid var(--ink);border-radius:0;background:#fff}.corp .faq details[open]{background:#FFD23F}
-.corp table{border:3px solid var(--ink)}.corp th{background:var(--ink);color:#fff}
+.corp table{border:3px solid var(--ink)}.corp th{background:var(--ink)!important;color:#fff!important}
+.corp .map-note h3{color:#fff;font-size:17px;margin-bottom:14px}
+.corp .philo__venn .circle small{opacity:1}
 .corp img{border-radius:0}
 .corp .container{max-width:1240px}
 .corp .route__icon,.corp .ic,.corp .flow__ic{display:none!important}
