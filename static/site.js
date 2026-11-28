@@ -9,3 +9,5 @@
   var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'});
   els.forEach(function(el){io.observe(el)});
 })();
+// 首屏の写真切替：2枚目以降はページ読み込み後に取得（最初の表示を速くする）
+addEventListener('load',function(){document.querySelectorAll('img[data-src]').forEach(function(i){if(i.dataset.srcset)i.srcset=i.dataset.srcset;i.src=i.dataset.src})});
