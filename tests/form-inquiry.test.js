@@ -170,10 +170,12 @@ function assertNotDelivered(ui) {
   assert.equal(ui.fields.message.value, SAMPLE.message);
 }
 
-test("受付URLの初期値は空で、成功用のURLを埋め込まない", () => {
+test("受付URLは chinichi_OS の公開受付口を1か所だけ指す", () => {
   const config = fs.readFileSync(path.join(__dirname, "../assets/config.js"), "utf8");
   const assignments = config.match(/window\.CHINICHI_LEAD_ENDPOINT\s*=\s*[^;]+;/g);
-  assert.deepEqual(assignments, ['window.CHINICHI_LEAD_ENDPOINT = "";']);
+  assert.deepEqual(assignments, [
+    'window.CHINICHI_LEAD_ENDPOINT = "https://chinichi-os.com/api/public/corporate-inquiry";',
+  ]);
 });
 
 test("応答の解釈は fixture の成功・失敗・HTML を分ける", () => {
