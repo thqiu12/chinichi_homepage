@@ -236,7 +236,7 @@ def read_page(p, lang):
     m = re.match(r"\s*<!--meta\s*(\{.*?\})\s*-->\s*", t, re.S)
     meta = json.loads(m.group(1))
     body = t[m.end():]
-    meta["body"] = md.to_html(body, shift=1) if p.suffix == ".md" else body
+    meta["body"] = md.to_html(body, shift=0) if p.suffix == ".md" else body
     meta.setdefault("lang", lang)
     return meta
 

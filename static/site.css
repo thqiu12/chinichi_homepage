@@ -179,3 +179,6 @@ header.g img,footer img{width:auto}
 footer .fh{color:#fff;margin:0 0 10px;font-size:15px;font-weight:700}
 .corp .eyebrow,.corp .eyebrow--c,.corp .eyebrow--g{color:var(--o-t)}
 .corp .btn--primary{background:var(--o-t)}.corp .btn--white{color:var(--ink)}
+/* 本文の見出し：## = h2（大見出し）、### = h3（小見出し）。以前は ## を h3 に下げていて h1→h3 の飛びになっていた */
+.prose h3{font-size:20px;margin:32px 0 10px;padding-top:0;border-top:0;letter-spacing:0}
+.prose h3::before{content:"";display:inline-block;width:10px;height:10px;background:var(--o);margin-right:10px;vertical-align:3px}
