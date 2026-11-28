@@ -19,6 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "tools"))
 import md  # noqa: E402
+import site_posts  # noqa: E402
 
 SRC, DIST = ROOT / "src", ROOT / "_site"
 BASE = "https://chinichi-edu.jp"
@@ -45,7 +46,7 @@ PAGE_IMG = {"/courses/": "class-lecture", "/courses/graduate/": "tutoring", "/co
             "/zh/access/": "takadanobaba", "/about/": "storefront", "/teachers/": "class-lecture"}
 PAGE_COLOR = {"/courses/graduate/": "#C8643B", "/courses/art/": "#12A6CF", "/courses/acg/": "#12A6CF", "/courses/music/": "#15171C",
               "/courses/sports/": "#2FA4E7"}
-SECTION_TAG = [("/courses/", "COURSE"), ("/results/", "RESULTS"), ("/teachers/", "TEACHERS"), ("/access/", "ACCESS"), ("/zh/access/", "CAMPUS"),
+SECTION_TAG = [("/courses/", "COURSE"), ("/results/", "RESULTS"), ("/teachers/", "TEACHERS"), ("/access/", "ACCESS"), ("/zh/access/", "CAMPUS"), ("/zh/news/", "NEWS"),
                ("/about/", "ABOUT"), ("/news/", "NEWS"), ("/recruit/", "RECRUIT"), ("/contact/", "CONTACT"), ("/corporate/", "FOR BUSINESS"),
                ("/privacy/", "PRIVACY")]
 ORG = {"@context": "https://schema.org", "@type": "EducationalOrganization", "@id": BASE + "/#org", "name": "知日株式会社",
@@ -369,6 +370,64 @@ def render_news():
     return posts
 
 
+# ───────── 日本の校舎の「官网动态」（chinichi_OS で各校舎が書き、責任者が承認したもの。中国語 → /zh/news/） ─────────
+JP_CAMPUS_ZH = {
+    "tokyo": ("知日塾 东京本部（高田马场）", "东京都新宿区高田马场1-34-8 大辉ビル2F", "高田马场站周边", TEL_JP),
+    "osaka": ("知日塾 大阪校", "大阪府大阪市中央区南本町3-4-7 第一住建御堂筋本町ビル", "本町站约 150 米", TEL_JP),
+    "kyoto": ("知日塾 京都校", "京都府京都市中京区河原町通蛸薬师下る塩屋町327-3", "阪急京都河原町站步行约 170 米", TEL_JP),
+}
+
+
+def _paras(text):
+    return "".join("<p>" + esc(p.strip()).replace("\n", "<br>") + "</p>" for p in re.split(r"\n\s*\n", text or "") if p.strip())
+
+
+def _post_img(im, cls=""):
+    return (f'<img src="{im["src"]}-800.jpg" srcset="{im["src"]}-800.jpg 800w, {im["src"]}-1600.jpg 1600w" '
+            f'sizes="(max-width: 900px) 100vw, 760px" width="800" height="600" alt="{esc(im.get("alt", ""))}" class="{cls}" loading="lazy">')
+
+
+def post_cards(items, limit=12):
+    out = []
+    for x in items[:limit]:
+        label = x.get("kindLabel") or ""
+        when = f'活动时间 {x["eventAt"][:16].replace("T", " ")}' if x["kind"] == "EVENT" and x.get("eventAt") else x["date"]
+        thumb = _post_img(x["images"][0], "pc-img") if x.get("images") else f'<div class="pc-img pc-noimg" aria-hidden="true"><span>{esc(label)}</span></div>'
+        out.append(f'<a class="pcard rv" href="{x["path"]}">{thumb}<div class="pc-b"><span class="pc-k">{esc(label)}'
+                   f'{" · " + esc(x["division"]) if x.get("division") else ""}</span><b>{esc(x["title"])}</b>'
+                   f'<span class="pc-d">{esc(x["campus"])} · {when}</span></div></a>')
+    return f'<div class="pcards">{"".join(out)}</div>' if out else ""
+
+
+def render_site_posts(posts):
+    items = [(None, "日本校区动态")]
+    lead = "东京、大阪、京都校区的活动、讲座、合格喜报和学员故事，由各校区老师撰写、校区负责人审核后发布。"
+    body = (pagehead("zh", "/zh/news/", items, "日本校区动态", lead) +
+            f'<div class="w content">{post_cards(posts, 60) or "<p>各校区的动态正在整理中。</p>"}'
+            f'<p class="note" style="margin-top:28px">中国国内校区（成都、上海、杭州、广州、西安、武汉）的动态见 <a href="https://www.chinichi.com/campus/">中国官网</a>。</p></div>')
+    emit("zh", "/zh/news/", "日本校区动态", "知日塾东京、大阪、京都校区的最新动态：活动讲座、合格喜报、学员故事。", body, ld(bc("zh", items)), priority="0.7")
+    for x in posts:
+        name, addr, access, tel = JP_CAMPUS_ZH[x["campusSlug"]]
+        items = [("/zh/news/", "日本校区动态"), (None, x["title"])]
+        ev = f'　活动时间：{x["eventAt"][:16].replace("T", " ")}' if x.get("eventAt") else ""
+        meta = (f'<p class="meta">{esc(x["campus"])} · {esc(x.get("kindLabel") or "")}{" · " + esc(x["division"]) if x.get("division") else ""}'
+                f' · <time datetime="{x["date"]}">{x["date"]}</time>{esc(ev)}</p>')
+        figs = "".join(f"<figure>{_post_img(im)}" + (f"<figcaption>{esc(im['alt'])}</figcaption>" if im.get("alt") else "") + "</figure>"
+                       for im in x["images"])
+        art_body = (pagehead("zh", "/zh/news/", items, esc(x["title"]), x.get("summary") or "", meta, img=False) +
+                    f'<div class="w content"><div class="layout"><article class="prose">{_paras(x["body"])}{figs}'
+                    f'<h2>{esc(name)}</h2><p>地址：{esc(addr)}（{esc(access)}）<br>电话：{esc(tel)}</p>'
+                    f'<p><a href="/zh/news/">← 日本校区动态</a></p></article>{SIDE["zh"]}</div></div>')
+        art = {"@context": "https://schema.org", "@type": "NewsArticle", "headline": x["title"], "inLanguage": "zh-CN",
+               "datePublished": x.get("publishedAt"), "dateModified": x.get("updatedAt"), "author": {"@id": BASE + "/#org"},
+               "publisher": {"@id": BASE + "/#org"}, "mainEntityOfPage": BASE + x["path"],
+               "contentLocation": {"@type": "Place", "name": name, "address": addr}}
+        if x["images"]:
+            art["image"] = [BASE + im["src"] + "-1600.jpg" for im in x["images"]]
+        desc = (x.get("summary") or re.sub(r"\s+", " ", x["body"]))[:120]
+        emit("zh", x["path"], x["title"], desc, art_body, ld(bc("zh", items), art), priority="0.6")
+
+
 # ───────── 旧URLの転送（GitHub Pages はサーバー側301が使えないので、meta refresh + canonical） ─────────
 def old_target(p, posts):
     for x in posts:
@@ -415,12 +474,22 @@ def main():
     shutil.copytree(ROOT / "assets", DIST / "assets", ignore=shutil.ignore_patterns("style.css"))
     (DIST / ".nojekyll").write_text("")
     posts = render_news()
+    jp_posts = site_posts.load(DIST)
+    if jp_posts:
+        NAV["zh"].insert(2, ("/zh/news/", "校区动态"))
     latest = {"ja": '<ul class="list">' + "".join(f'<li><a href="{x["path"]}"><span>{esc(x["title"])}</span><time>{x["date"] or x["category"]}</time></a></li>' for x in posts[:6]) + "</ul>",
-              "zh": ""}
+              "zh": ('<ul class="list">' + "".join(f'<li><a href="{x["path"]}"><span>【{esc(x["campus"])}】{esc(x["title"])}</span><time>{x["date"]}</time></a></li>' for x in jp_posts[:6]) + "</ul>") if jp_posts else ""}
     for lang in ("ja", "zh"):
         for p in sorted((SRC / lang).glob("*")):
             if p.suffix in (".md", ".html"):
-                render_page(read_page(p, lang), latest)
+                page = read_page(p, lang)
+                if jp_posts and page["path"] == "/zh/access/":
+                    page["body"] += f'<h2>日本校区最新动态</h2>{post_cards(jp_posts, 6)}<p><a href="/zh/news/">看全部日本校区动态 →</a></p>'
+                if jp_posts and page["path"] == "/access/":
+                    page["body"] += ('<h2>各校舎からのお知らせ</h2><p>東京・大阪・京都の各校舎のイベント、説明会、合格のお知らせは、'
+                                     '留学生向けに中国語で掲載しています。</p><p><a href="/zh/news/">校舎のお知らせ（中国語）を見る →</a></p>')
+                render_page(page, latest)
+    render_site_posts(jp_posts)
     render_frags()
     render_teachers()
     n = render_redirects(posts)
@@ -431,7 +500,7 @@ def main():
           '<main id="main"><section class="pagehead"><div class="w"><em class="tag">404</em><h1>ページが見つかりません</h1>'
           '<p class="lead">サイトをリニューアルしたため、ページの場所が変わった可能性があります。</p>'
           '<p style="margin-top:24px"><a class="btn" href="/">ホームへ</a>　<a href="/courses/">コース一覧</a>　<a href="/contact/">お問い合わせ</a></p></div></section></main>' + foot("ja"))
-    print(f"完了：{len(SITEMAP)} ページ、旧URL転送 {n} 件 → {DIST}{'（SITE_PREFIX=' + PREFIX + '）' if PREFIX else ''}")
+    print(f"完了：{len(SITEMAP)} ページ（日本の校舎の官网动态 {len(jp_posts)} 件）、旧URL転送 {n} 件 → {DIST}{'（SITE_PREFIX=' + PREFIX + '）' if PREFIX else ''}")
 
 
 if __name__ == "__main__":
