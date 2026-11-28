@@ -24,7 +24,7 @@ import site_posts  # noqa: E402
 SRC, DIST = ROOT / "src", ROOT / "_site"
 BASE = "https://chinichi-edu.jp"
 PREFIX = os.environ.get("SITE_PREFIX", "").rstrip("/")
-NOINDEX = bool(PREFIX) or os.environ.get("NOINDEX") == "1"  # 確認用（github.io・Vercel）は検索に出さない
+NOINDEX = bool(PREFIX) or os.environ.get("NOINDEX") == "1"  # 確認用（github.io のプロジェクトURL など）は検索に出さない
 UPDATED = date.today().isoformat()
 esc = lambda s: html.escape(str(s), quote=True)
 
